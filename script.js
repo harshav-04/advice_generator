@@ -4,9 +4,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function getQuote() {
         try {
-            const response = await fetch("https://api.quotable.io/random");
-            const data = await response.json();
-            textBlock.textContent = `"${data.content}" — ${data.author}`;
+            const response = await fetch("https://api.adviceslip.com/advice");
+
+            // Force parse the text (not json!)
+            const rawText = await response.text();
+            const data = JSON.parse(rawText); // Manually parse it as JSON
+
+            const quote = data.slip.advice;
+
+            textBlock.textContent = `"${quote}"`;
         } catch (error) {
             console.error("Error fetching quote:", error);
             textBlock.textContent = "Something went wrong!";
